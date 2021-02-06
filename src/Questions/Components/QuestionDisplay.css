@@ -1,0 +1,29 @@
+.container{
+    
+}
+
+.questions-editor{
+    flex: 0.4em;
+    border-radius: 1em;
+    border-style:solid;
+    background-color: aliceblue;
+    position: sticky;
+    top: 0;
+    height: 530px;
+    width: fit-content;
+}
+
+.questions{
+   
+}
+
+.itemDisplay{
+    white-space: pre;
+    text-align: left;
+}
+
+.item{
+    
+    flex:0.5em;
+    
+}
