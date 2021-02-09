@@ -1,6 +1,7 @@
 import React from 'react'
 import Post from '../../Post/Components/Post'
 import PostEditor from '../../PostBody/Components/PostEditor'
+import {db} from '../../firebase'
 
 
 class ThreadDisplay extends React.Component{
@@ -21,9 +22,22 @@ class ThreadDisplay extends React.Component{
         this.setState(newPost);
       }
     
+      componentDidMount(){
+        console.log('Answers Thread mounted');
+        console.log();
+        
+
+    }
+
       render(){
         return (
           <div className="Containter m-4 bg-blue">
+            <div>
+              {}
+            </div>
+            <div>
+              <PostEditor addPost={this.addPost}/>
+            </div>
             <div className="Containter">
               {
                 this.state.post.map(
@@ -41,9 +55,7 @@ class ThreadDisplay extends React.Component{
               }
               
             </div>
-            <div>
-              <PostEditor addPost={this.addPost}/>
-            </div>
+            
           </div>
         );
     }

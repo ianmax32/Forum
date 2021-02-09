@@ -1,6 +1,7 @@
 import { faCalendar, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
+import { v4 as uuidv4 } from "uuid";
 
 
 class QuestionEditor extends React.Component{
@@ -8,7 +9,8 @@ class QuestionEditor extends React.Component{
         super(props)
         this.state={
             que : {
-                
+                id: '',
+                date: '',
                 question:'',
                 userName : '',
                 answers:[]
@@ -26,7 +28,8 @@ class QuestionEditor extends React.Component{
         this.setState((prevState) =>({
             que : {
                 ...this.state.que,
-                
+                id: uuidv4(),
+                date: new Date().toLocaleDateString(),
                 question: que.target.value},
             blank:false
         }))
@@ -41,17 +44,9 @@ class QuestionEditor extends React.Component{
         })
     }
 
-    createQuestion(){
+    createQuestion(e){
+        e.preventDefault();
         this.props.addQuestion(this.state.que);
-        //this.props.username(this.state.username);
-        this.setState((prevState) =>({
-            que : {
-            
-                userName: '',
-                question:''
-            },
-            blank:true
-        }))
     }
 
     render(){

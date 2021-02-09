@@ -2,7 +2,9 @@ import React from 'react'
 import Question from './Question'
 import './QuestionDisplay.css'
 import QuestionEditor from './QuestionEditor'
-import firebaseDB from '../../firebase'
+import firebase,{db} from '../../firebase'
+
+
 
 class QuestionsDisplay extends React.Component{
     constructor(props){
@@ -13,14 +15,39 @@ class QuestionsDisplay extends React.Component{
         this.addQuestion = this.addQuestion.bind(this)
     }
 
+    componentDidMount(){
+        console.log('mounted');
+        db.collection('Questions')
+          .get()
+          .then( snapshot => {
+            const Questions = []
+                snapshot.forEach(doc =>{
+                    const data = doc.data();
+                    Questions.push(data);
+                })
+                this.setState({
+                    questions:Questions
+                })
+                
+          }
+        )
+          .catch(err => console.log(err));
+    }
+
     addQuestion(que){
-        //que.preventDefault();
-        const question = Object.assign({},this.state);
-        question.questions.push(que);
-        //firebaseDB.collections().ref('Questions').push(que);
-        this.setState(question);
-        
-        
+        db.collection('Questions').add({que}).then(
+            db.collection('Questions').onSnapshot(snapshot =>{
+                const Questions = []
+                snapshot.forEach(doc =>{
+                    const data = doc.data();
+                    Questions.push(data);
+                })
+                this.setState({
+                    questions:Questions
+                }) 
+            })
+        ).catch(err => {'error adding info'}); 
+       console.log('question added');
     }
 
     
@@ -35,15 +62,15 @@ class QuestionsDisplay extends React.Component{
                 <div class="col-1 border-right"></div>
                 
                     <div className="ml-5">
-                        <h1 className="text-black-50">Question Asked</h1>
+                        <h1 className="text-black-50">Questions Asked</h1>
                     {
                         this.state.questions.map(
                             item => 
-                            <Question key={item.id}
-                                 username={item.userName}
-                                date={new Date().toLocaleDateString()} 
-                                question={<p className='itemDisplay'>{item.question}</p>}
-                                link={'/answer/:id'}
+                            <Question key={item.que.id}
+                                username={item.que.userName}
+                                date={item.que.date} 
+                                question={<p className='itemDisplay'>{item.que.question}</p>}
+                                link={`/answer/${item.que.id}`}
                                 />
                         )
                         

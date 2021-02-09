@@ -1,16 +1,16 @@
-import { config } from '@fortawesome/fontawesome-svg-core';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import'firebase/firestore';
 
 
   var firebaseConfig = {
     apiKey:process.env.API_KEY ,
-    authDomain: "ssforum-c1e11.firebaseapp.com",
-    projectId: "ssforum-c1e11",
-    storageBucket: "ssforum-c1e11.appspot.com",
-    messagingSenderId: "333785561091",
-    appId: "1:333785561091:web:25680eb142fa8bec96f636"
+    authDomain: process.env.authDomain,
+    projectId: process.env.projectId,
+    storageBucket: process.env.storageBucket,
+    messagingSenderId: process.env.messagingSenderId,
+    appId: process.env.appId
   };
 
-  const firebaseDB = firebase.initializeApp(firebaseConfig);
-
-  export default firebaseDB;
+firebase.initializeApp(firebaseConfig);
+export const db = firebase.firestore();
+export default firebase;
