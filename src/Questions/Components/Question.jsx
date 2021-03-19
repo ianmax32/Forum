@@ -14,13 +14,13 @@ function Question(props){
                     <FontAwesomeIcon icon={faUser}/> <label className="pr-5">{props.username}</label>
                     <FontAwesomeIcon icon={faCalendar}/> <label >{props.date}</label>
                 </div>
-                <p className="border-bottom">{props.question}</p>                 
+                <p className="border-bottom question">{props.question}</p>                 
                 <div className="row m-3 justify-content-around">        
                     <Link to={props.link}>
                         <button className="btn btn-primary btn-sm float-right"><FontAwesomeIcon icon={faPaperPlane}/> Comment</button>
                     </Link>
                     <div>
-                        <button className="btn btn-primary btn-sm"><FontAwesomeIcon icon={faThumbsUp} />Like</button>
+                        <button className="btn btn-primary btn-sm"><FontAwesomeIcon icon={faThumbsUp} />Like {props.likes}</button>
                     </div>
 
                     <div>

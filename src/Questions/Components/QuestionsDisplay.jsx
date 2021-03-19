@@ -1,76 +1,38 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import Question from './Question'
 import './QuestionDisplay.css'
 import QuestionEditor from './QuestionEditor'
-import firebase,{db} from '../../firebase'
+import {useSelector, useDispatch}  from 'react-redux'
+import {Post} from '../../Actions/PostAction'
+import answerAction from '../../Actions/answerAction'
 
+function QuestionsDisplay(){
+    const posts = useSelector(state => state.PostReducer);
+    const dispatch = useDispatch();
 
-
-class QuestionsDisplay extends React.Component{
-    constructor(props){
-        super(props)
-        this.state ={
-            questions : [],
-        }
-        this.addQuestion = this.addQuestion.bind(this)
-    }
-
-    componentDidMount(){
-        console.log('mounted');
-        db.collection('Questions')
-          .get()
-          .then( snapshot => {
-            const Questions = []
-                snapshot.forEach(doc =>{
-                    const data = doc.data();
-                    Questions.push(data);
-                })
-                this.setState({
-                    questions:Questions
-                })
-                
-          }
-        )
-          .catch(err => console.log(err));
-    }
-
-    addQuestion(que){
-        db.collection('Questions').add({que}).then(
-            db.collection('Questions').onSnapshot(snapshot =>{
-                const Questions = []
-                snapshot.forEach(doc =>{
-                    const data = doc.data();
-                    Questions.push(data);
-                })
-                this.setState({
-                    questions:Questions
-                }) 
-            })
-        ).catch(err => {'error adding info'}); 
-       console.log('question added');
-    }
-
-    
-
-    render(){
+    useEffect(() =>{
+        dispatch(Post);
+    });
+   
         return(
             <div className="container m-3 row justify-content-around">
 
                 <div className="questions-editor">  
-                    <QuestionEditor addQuestion={this.addQuestion}/>
+                    <QuestionEditor />
                 </div>
                 <div class="col-1 border-right"></div>
                 
-                    <div className="ml-5">
+                    <div className="ml-3">
                         <h1 className="text-black-50">Questions Asked</h1>
                     {
-                        this.state.questions.map(
+                        posts.map(
                             item => 
-                            <Question key={item.que.id}
-                                username={item.que.userName}
-                                date={item.que.date} 
-                                question={<p className='itemDisplay'>{item.que.question}</p>}
-                                link={`/answer/${item.que.id}`}
+                            <Question key={item.id}
+                                username={item.username}
+                                date={item.date} 
+                                question={<p className='itemDisplay'>{item.question}</p>}
+                                likes={item.likes}
+                                link={`/answer/${item.id}`}
                                 />
                         )
                         
@@ -84,7 +46,7 @@ class QuestionsDisplay extends React.Component{
   
             </div>
         )
-    }
+    
 }
 
 export default QuestionsDisplay
