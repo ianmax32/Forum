@@ -1,5 +1,7 @@
 import {combineReducers} from 'redux'
 import AnswerReducer from './AnswerReducer'
-import PostReducer from './PostReducer'
-const Reducers = combineReducers({AnswerReducer,PostReducer});
+import PostReducers from './PostReducer'
+const Reducers = combineReducers({
+    AR:AnswerReducer,
+    PR:PostReducers});
 export default Reducers;

@@ -1,17 +1,26 @@
 import axios from 'axios'
-const PostReducer = (state, action) =>{
+const PostReducers = (state=[], action) =>{
     switch(action.type){
-        case "Post": try {
-            axios.get('http://localhost:8080/')
-            .then((res) =>{
-                console.log(res);
-                state.push(res.data.questions)
-            })
-        } catch (error) {
-            console.log(error);
-        };
+        case "Post":state = action.payload;
+                    return state;
+        default:return state;
 
     }
 }
 
-export default PostReducer;
+export const LikeReducer = (state=0,action) =>{
+    switch(action.type){
+        case "Like":try{
+            axios.patch('http://localhost:8080/',state.likes = state.likes + 1)
+            .then(res =>{
+                console.log(res);
+            })
+            
+        } catch (error) {
+            console.log(error);
+        };break;
+        default:return state;
+    }
+}
+
+export default PostReducers;

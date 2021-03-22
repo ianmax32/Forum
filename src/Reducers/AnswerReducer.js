@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const AnswerReducer = (state,action) =>{
+const AnswerReducer = (state=[],action) =>{
     switch(action.type){
         case "Answer":try {
             axios.get('http://localhost:8080/:id')
@@ -19,7 +19,8 @@ const AnswerReducer = (state,action) =>{
             })
         } catch (error) {
             console.log(error);
-        }
+        };break;
+        default:return state;
     }
 }
 

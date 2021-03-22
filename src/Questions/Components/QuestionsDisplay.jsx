@@ -6,14 +6,14 @@ import {useSelector, useDispatch}  from 'react-redux'
 import {Post} from '../../Actions/PostAction'
 import answerAction from '../../Actions/answerAction'
 
-function QuestionsDisplay(){
-    const posts = useSelector(state => state.PostReducer);
+function QuestionsDisplay(){ 
     const dispatch = useDispatch();
-
-    useEffect(() =>{
-        dispatch(Post);
-    });
-   
+    useEffect(()=>{
+        const posts=  dispatch(Post());
+    },[])
+    //const posts = useSelector(state => state.PR);
+    console.log(posts)
+  
         return(
             <div className="container m-3 row justify-content-around">
 
@@ -24,8 +24,8 @@ function QuestionsDisplay(){
                 
                     <div className="ml-3">
                         <h1 className="text-black-50">Questions Asked</h1>
-                    {
-                        posts.map(
+                    {posts.length > 0 ?
+                        (posts.map(
                             item => 
                             <Question key={item.id}
                                 username={item.username}
@@ -34,8 +34,9 @@ function QuestionsDisplay(){
                                 likes={item.likes}
                                 link={`/answer/${item.id}`}
                                 />
+                        )):(
+                            <h1 className="text-black-50">No Questions</h1>
                         )
-                        
                     }
                         
 
@@ -46,7 +47,6 @@ function QuestionsDisplay(){
   
             </div>
         )
-    
 }
 
 export default QuestionsDisplay
