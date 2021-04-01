@@ -2,6 +2,7 @@ import { faCalendar, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
 
 
 class QuestionEditor extends React.Component{
@@ -9,11 +10,11 @@ class QuestionEditor extends React.Component{
         super(props)
         this.state={
             que : {
-                id: '',
                 date: '',
                 question:'',
-                userName : '',
-                answers:[]
+                username : '',
+                answers:[],
+                likes:0
             },
             
             blank:true,
@@ -28,7 +29,6 @@ class QuestionEditor extends React.Component{
         this.setState((prevState) =>({
             que : {
                 ...this.state.que,
-                id: uuidv4(),
                 date: new Date().toLocaleDateString(),
                 question: que.target.value},
             blank:false
@@ -39,14 +39,20 @@ class QuestionEditor extends React.Component{
         this.setState({
             que: {
                 ...this.state.que,
-                userName : user.target.value},
+                username : user.target.value},
             blank:false
         })
     }
 
     createQuestion(e){
         e.preventDefault();
-        this.props.addQuestion(this.state.que);
+        try {
+            axios.post('http://localhost:8080/',this.state.que).then(res=>{
+                console.log(res);
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     render(){
@@ -55,7 +61,7 @@ class QuestionEditor extends React.Component{
                 
                 <div className="form p-3 overflow-auto">
                    <form>  
-                        <input type="text" className="form-control" placeholder="Username" onChange={this.handleUsername} value={this.state.que.userName}/>
+                        <input type="text" className="form-control" placeholder="Username" onChange={this.handleUsername} value={this.state.que.username}/>
                         <label><FontAwesomeIcon icon={faCalendar}/> Date: {new Date().toLocaleDateString()}</label>
                         <textarea placeholder="Enter your question here" className="form-control" rows="10" onChange={this.handleQuestion} value={this.state.que.question}></textarea>
                         {this.state.blank ? <button className="btn btn-primary m-2 text-white" disabled={'True'} onClick={this.createQuestion}><FontAwesomeIcon icon={faPaperPlane} /> Submit</button>:<button className="btn btn-primary btn-block m-2 text-white" enabled={'True'} onClick={this.createQuestion}>Submit</button>}

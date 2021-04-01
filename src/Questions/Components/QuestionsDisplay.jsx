@@ -2,16 +2,48 @@ import React,{useState,useEffect} from 'react'
 import Question from './Question'
 import './QuestionDisplay.css'
 import QuestionEditor from './QuestionEditor'
-import {useSelector, useDispatch}  from 'react-redux'
-import {Post} from '../../Actions/PostAction'
-import answerAction from '../../Actions/answerAction'
+import axios from 'axios'
 
 function QuestionsDisplay(){ 
-    const dispatch = useDispatch();
+    const [posts,setPosts] = useState([]);
+    const [likes,setLikes] = useState(0);
+
     useEffect(()=>{
-        const posts=  dispatch(Post());
+        getData()
+        /*setInterval(()=>{
+            try {
+                getData()
+            } catch (error) {
+                console.log(error);
+            }
+        },10000)*/
     },[])
-    //const posts = useSelector(state => state.PR);
+    
+    const getData = async () =>{
+        try {
+            await axios.get('http://localhost:8080/')
+            .then(res=>{
+                console.log(res.data.questions)
+                setPosts(res.data.questions)
+                console.log(res.data.questions.likes)
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleClick = async () =>{
+        try {
+            await axios.patch('http://localhost:8080/',{
+                //posts[0].likes : posts[0].likes + 1 
+            }).then((res)=>{
+                console.log(res)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     console.log(posts)
   
         return(
@@ -31,8 +63,8 @@ function QuestionsDisplay(){
                                 username={item.username}
                                 date={item.date} 
                                 question={<p className='itemDisplay'>{item.question}</p>}
-                                likes={item.likes}
-                                link={`/answer/${item.id}`}
+                                link={`/answer/${item._id}`}
+                                handleClick={handleClick()}
                                 />
                         )):(
                             <h1 className="text-black-50">No Questions</h1>

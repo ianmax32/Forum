@@ -9,29 +9,38 @@ class PostEditor extends React.Component{
         this.handlePostOnChange = this.handlePostOnChange.bind(this);
         this.handleUsername = this.handleUsername.bind(this);
         this.state = {
-            newpost:'',
-            username:''
+            post:{
+                newpost:'',
+                username:''
+            }
         }
 
         
     }
  
     handlePostOnChange(e){
-        this.setState({
-            newpost : e.target.value
-        })
+        this.setState((prevState) =>({
+            post:{
+                ...prevState.username,
+                newpost : e.target.value
+            }
+        }))
     }
 
     handleUsername(e){
-        this.setState({
-            username : e.target.value
-        })
+        this.setState((prevState) =>({
+            post:{
+                ...prevState.newpost,
+                username : e.target.value
+            }
+        }))
     }
 
     createPost(){
-        this.props.addPost(this.state.newpost)
+        this.props.addPost(this.state.post)
         this.setState({
-            newpost:''
+            newpost:'',
+            username:''
         })
     }
 
